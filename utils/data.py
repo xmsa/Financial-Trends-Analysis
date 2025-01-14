@@ -141,6 +141,7 @@ def process_data(soup: BeautifulSoup) -> pd.DataFrame:
         cell = str.replace(cell, ",", "")
         return cell
 
+    table = soup.find(attrs={"class": "table"})
     rows = []
     for tr in table.find_all("tr")[1:]:
         cells = tr.find_all("td")
@@ -150,7 +151,6 @@ def process_data(soup: BeautifulSoup) -> pd.DataFrame:
         else:
             rows.append(row)
 
-    table = soup.find(attrs={"class": "table"})
     headers = "Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"
     df = pd.DataFrame(rows, columns=headers)
     df['Date'] = pd.to_datetime(df['Date'])
